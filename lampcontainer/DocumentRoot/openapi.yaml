@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  description: LampDemo
+  version: 1.0.0
+  title: LampDemo
+  
+tags:
+  - name: User
+    description: User Operations
+
+paths:
+
+  /user:
+    post:
+      
+      summary: Creates a user
+      tags:
+        - User
+      responses:
+        '200':
+          description: Ok
+          
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        
+        '422':
+          $ref: '#/components/responses/422ValidationFailure'
+        '409':
+          $ref: '#/components/responses/409Conflict'
+         
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usercreate'
+        description: user create parameters
+        required: true
+ 
+  /user/{id}:
+    patch:
+      summary: Update user
+      tags: 
+        - User
+      
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Account Id of the subscription.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usercreate'
+                    
+      responses:
+        '200':
+          description: ok
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '422':
+          $ref: '#/components/responses/422ValidationFailure'
+        '409':
+          $ref: '#/components/responses/409Conflict'
+          
+  
+    get:
+      summary: Get details of user
+      tags: 
+        - User
+      
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Account Id of the subscription.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+         
+          
+        '401':
+          $ref: '#/components/responses/401Unauthorized'
+        '404':
+          $ref: '#/components/responses/404NotFound'
+        '422':
+          $ref: '#/components/responses/422ValidationFailure'
+ 
+      
+components:
+  
+  schemas:
+    
+    user:
+      type: object
+      properties:
+        id:
+          type: number
+        name: 
+          type: string
+        age:
+          type: number
+        data1:
+          type: string
+          
+        data2:
+          type: string
+          
+        created_at:
+          type: string
+        updated_at:
+          type: string  
+    usercreate:
+      type: object
+      properties:
+        
+        name: 
+          type: string
+        age:
+          type: number
+        data1:
+          type: string
+          
+        data2:
+          type: string
+          
+            
+      
+  responses:
+    503ServiceUnavailable:
+      description: Service Unavailable
+    404NotFound:
+      description: The specified resource was not found.
+    401Unauthorized:
+      description: Unauthorized Access
+    422ValidationFailure:
+      description: Invalid Input
+    403ForbiddenError:
+      description: Forbidden
+    409Conflict:
+      description: conflict
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error_message:
+                type: string
+              error_code:
+                type: number
+    
